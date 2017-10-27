@@ -6,9 +6,8 @@ It uses the DOE EIA API to download state level rate and consumption data, and t
 
 ## EIA Data Queries
 
-EIADataQuery.py (and EIADataQuery_pd.py)d is a collection of Python 3.6 classes that were developed 
-to download data from the U.S. Department of Energy's Energy Information 
-Administration (EIA) using their data API.  
+'EIADataQuery.py' (and 'EIADataQuery_pd.py') is a collection of Python 3.6 classes that were developed 
+to download data from the U.S. Department of Energy's Energy Information Administration (EIA) using their data API.  
 
 The API is described at the link that follows--
 https://www.eia.gov/opendata/
@@ -20,10 +19,10 @@ _EIA_RegKey in the EIAQuery class.
 This module contains two main classes that are intended to provide easy data 
 access and subsequent processing.
 
-  1) EIAQuery:        A low-level data query that downloads and 
+  1) 'EIAQuery':      A low-level data query that downloads and 
                       stores the specified data.
 
-  2) EIAStateQuery:   A state-level query that downloads a specified 
+  2) 'EIAStateQuery': A state-level query that downloads a specified 
                       set of quiries for the specified sector (COMmercial,
                       INDustrial, or RESidential) and state (e.g. CT, NY)
                       The data include for time span available in the
@@ -32,27 +31,25 @@ access and subsequent processing.
 
 ## Distributed Generation Value Proposition
 
-DGValueProp.py is a collection of classes that are desgined to assess the value proposition for distributed generation (DG)
-technology in the United States--at the state (e.g. Connecticut) and sector (e.g. Commercial) level of analysis.
+'DGValueProp.py' is a collection of classes that are desgined to assess the value proposition for distributed generation (DG) technology in the United States--at the state (e.g. Connecticut) and sector (e.g. Commercial) level of analysis.
 The following classes are defined within it--
+'''
 1.  DGOut
 2.  DGIn
 3.  DGValProp
 4.  SensitivityStudy
 5.  EPA_CHP_System_Specs
+'''
 
-DGOut is a class that is designed to store distirbuted generation value proposition metrics (e.g NPV, IRR, etc.), a market
+'DGOut' is a class that is designed to store distirbuted generation value proposition metrics (e.g NPV, IRR, etc.), a market
 penetration estimate, and the effective electric efficiency.  Its only method is __init__.
 
-DGIn is a class that is designed to store the necessary input parameters for the assessment of the value proposition for DG
-equipment.  These parameters include a number of efficiency, cost and utilization metrics.
+'DGIn' is a class that is designed to store the necessary input parameters for the assessment of the value proposition for DG equipment.  These parameters include a number of efficiency, cost and utilization metrics.
 
-DGValProp is a class that contains the the input assumptions and output economic value proposition estimate for a 
+'DGValProp' is a class that contains the the input assumptions and output economic value proposition estimate for a 
 specific distributed generation scenario.  It consists of two sub-classes:  DGin() and DGOut().
 
-SensitivityStudy is a class designed to run and store a two-parameter DG value proposition sensitivity study for a specific 
-region (e.g. state, US), year, and sector (e.g. COM).  In a study, DG system input characteristics are varied over the 
-specified range while holding the remainder at constant/nominal values.
+'SensitivityStudy' is a class designed to run and store a two-parameter DG value proposition sensitivity study for a specific region (e.g. state, US), year, and sector (e.g. COM).  In a study, DG system input characteristics are varied over the specified range while holding the remainder at constant/nominal values.
 
 The "input" parameters/attributes include:
     1. Region - A string containing a two letter region code 
