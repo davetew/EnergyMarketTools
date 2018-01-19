@@ -6,7 +6,7 @@ It uses the DOE EIA API to download state level rate and consumption data, and t
 
 ## EIA Data Queries
 
-'EIADataQuery.py' (and 'EIADataQuery_pd.py') is a collection of Python 3.6 classes that were developed 
+'EIADataQuery.py' (and 'EIADataQuery_pd.py') is (are) a collection of Python 3.6 classes that were developed 
 to download data from the U.S. Department of Energy's Energy Information Administration (EIA) using their data API.  
 
 The API is described at the link that follows--
