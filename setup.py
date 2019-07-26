@@ -7,5 +7,5 @@ setup(
    author='David Tew',
    author_email='davetew@alum.mit.edu',
    packages=['Energy-Market-Tools'],  #same as name
-   install_requires=['bar', 'greek'], #external packages as dependencies
+   install_requires=['numpy', 'matplotlib','pandas','requests'], #external packages as dependencies
 )
