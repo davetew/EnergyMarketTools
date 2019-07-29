@@ -10,9 +10,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
-from DGValueProp import SensitivityStudy
-from EIADataQuery import EIAStateQuery
-from parula_cmap import parula_cmap
+from EnergyMarketTools.DGValueProp import SensitivityStudy
+from EnergyMarketTools.EIADataQuery import EIAStateQuery
+from EnergyMarketTools.parula_cmap import parula_cmap
 
 class MarketStudy:    
     """Run a two parameter sensitivity study in the specified regions, over 
