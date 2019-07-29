@@ -55,7 +55,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 from EnergyMarketTools.EIADataQuery import EIAStateQuery
-from parula_cmap import parula_cmap, parula_cmap_r
+from EnergyMarketTools.parula_cmap import parula_cmap, parula_cmap_r
 
 #%% Define class structures for storing DG value proposition data
 class DGOut:
