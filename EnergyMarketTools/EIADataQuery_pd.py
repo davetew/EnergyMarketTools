@@ -66,11 +66,11 @@ class EIAQuery():
         DataDict = {int(RawQuantData[i,0]): float(RawQuantData[i,1]) 
                     for i in range(len(RawQuantData[:,0]))}
         
-        # Standardize units
-        self._StandardizeUnits()
-        
         # 'Clean' data by replacing None with NaN
         self.QuantData = self._CleanData( DataDict)
+        
+        # Standardize units
+        self._StandardizeUnits()
         
         # Create pandas dataframe with the data
         self.DataFrame.from_dict(self.QuantData, columns=[self.Units])
