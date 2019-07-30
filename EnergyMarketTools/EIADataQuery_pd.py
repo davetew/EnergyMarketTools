@@ -73,7 +73,7 @@ class EIAQuery():
         self._StandardizeUnits()
         
         # Create pandas dataframe with the data
-        self.DataFrame = pd.DataFrame.from_dict(self.QuantData, columns=[self.Units])
+        self.DataFrame = pd.DataFrame.from_dict(self.QuantData, orient='index', columns=[self.Units])
         
     # Clean datasets by replacing Nones with NaNs & Converting Units (if needed)
     def _CleanData(self, Dict2Clean, UnitFactor=1):
