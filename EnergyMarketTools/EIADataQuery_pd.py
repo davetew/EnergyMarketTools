@@ -99,6 +99,7 @@ class EIAQuery():
         
         # Conversion Factors & New Units
         Conversions = {'Dollars per million Btu': (1/293.3,'$/kWh'),
+                       'Dollars per Thousand Cubic Feet': (1, '$/Mcf')
                        'Million kilowatthours': (1e6,'kWh'),
                        'thousand megawatthours': (1e6, 'kWh'),                          
                        'kWh': (1, 'kWh'),                         
