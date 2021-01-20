@@ -108,7 +108,7 @@ class EIAQuery():
                        'kWh': (1, 'kWh'),                         
                        'Dollar per kilowatthour': (1,'$/kWh'),
                        '$/kWh': (1, '$/kWh'), 
-                       'Trillion Btu': ( 293.07 ,'GWh') }                            
+                       'Trillion Btu': ( 0.29307 ,'TWh') }                            
  #                      'cents per kilowatthour': (0.01,'$/kWh') }                          }                         
                                     
         for key, value in self.QuantData.items():
