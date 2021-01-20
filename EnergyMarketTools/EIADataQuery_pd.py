@@ -56,7 +56,7 @@ class EIAQuery():
         # Extract dataset name & Units
         self.Name = self.AllData['series'][0]['name']
         self.Units = self.AllData['series'][0]['units']
-        self.Geography = self.AllData['series'][0]['geography']
+        # self.Geography = self.AllData['series'][0]['geography']
         print('   Successfully retrieved--> ' + self.Name)
         
         # Extract quantitative data
