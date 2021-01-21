@@ -56,6 +56,7 @@ class EIAQuery():
         """Get the data from the EIA if told to do so, or the data file isn't
         at the specified location."""
         
+        DataFrameList = []
         for DataSet in DataSets:
 
             # Full data query
@@ -67,34 +68,24 @@ class EIAQuery():
 
             # Extract dataset name & Units
             self.Name = self.AllData.get('name')
-            self.Units = self.AllData.get('units')
             self.Geography = self.AllData.get('geography')
             print('   Successfully retrieved--> ' + self.Name)
         
             # Extract quantitative data
-            RawQuantData = np.array(self.AllData.get('data')   
+            RawQuantData = np.array(self.AllData.get('data'))   
             
+            Units = self.AllData.get('units')
+            Period = RawQuantData[:, 0]
+            Data = RawQuantData[:, 1]
+
             # Store quantitative data in dictionary {period: data}
-            DataDict = {int(RawQuantData[i,0]): Q_(float(RawQuantData[i,1]), self.AllData.get('units')
-                        for i in range(len(RawQuantData[:,0]))}
-        
-            # 'Clean' data by replacing None with NaN
-            self.QuantData = self._CleanData(DataDict)
-        
-        # Standardize units
-        self._StandardizeUnits()
-        
+            DataDict = {period: Q_(data if data is not None else np.nan, Units) for period, data in zip(Period, Data)}
+
+            # Create a dataframe and add it to the list of dataframes
+            DataFrameList.append(pd.DataFrame.from_dict(DataDict, orient='index', columns=[self.Name]))
+
         # Create pandas dataframe with the data
         self.DataFrame = pd.DataFrame.from_dict(self.QuantData, orient='index', columns=[self.Units])
-        
-    # Clean datasets by replacing Nones with NaNs & Converting Units (if needed)
-    def _CleanData(self, Dict2Clean, UnitFactor=1):
-        for key, value in Dict2Clean.items():
-            if Dict2Clean[key] is None:
-                Dict2Clean[key] = float("NaN")
-            else:
-                Dict2Clean[key] = float(value)*UnitFactor
-        return Dict2Clean
 
     @property
     def TimeSpan(self):
