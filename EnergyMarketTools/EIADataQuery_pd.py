@@ -49,7 +49,7 @@ class EIAQuery():
     def __init__(self,DataSets,GetFromEIA=False):
         """Initialize an instance of EIA Query given a specified DataSet or list of DataSet"""
 
-        if isinstance(DataSet, str):
+        if isinstance(DataSets, str):
             # Convert DataSet to a list with one item
             DataSets = [DataSets]
 
@@ -62,30 +62,31 @@ class EIAQuery():
             # Full data query
             FullQuery = self._QueryPrefix + DataSet
         
-            # Execute data query
+            # Execute data query & save the data in a dictionary with the below keys of interest
+            #   name: a string containing the dataset name
+            #   geography: a string containing the state/region for the data (optional)
+            #   units: a string containing units for the quantitative data
+            #   data: a N x 2 array with the period in the first column and the data in the second
             print('Downloading ' + DataSet + ' from the EIA.')
-            self.AllData = rq.get(self.FullQuery).json()['series'][0]
+            RawData = rq.get(self.FullQuery).json()['series'][0]
 
-            # Extract dataset name & Units
-            self.Name = self.AllData.get('name')
-            self.Geography = self.AllData.get('geography')
-            print('   Successfully retrieved--> ' + self.Name)
-        
-            # Extract quantitative data
-            RawQuantData = np.array(self.AllData.get('data'))   
+            # Save the data in a more concise form
+            for key in ['name', 'geography', 'units', 'data']:
+                eval(f"{key} = RawData.get({key})")
             
-            Units = self.AllData.get('units')
-            Period = RawQuantData[:, 0]
-            Data = RawQuantData[:, 1]
+            # Convert the data list of lists to a numpy array
+            data = np.array(data)
+            
+            # Save the data in a more convenient form
+            Period, Value = data[:, 0], data[:, 1]  
 
-            # Store quantitative data in dictionary {period: data}
-            DataDict = {period: Q_(data if data is not None else np.nan, Units) for period, data in zip(Period, Data)}
+            # Store quantitative data in dictionary {period: value}
+            DataDict = {period: Q_(value if value is not None else np.nan, units) for period, value in zip(Period, Value)}
 
             # Create a dataframe and add it to the list of dataframes
-            DataFrameList.append(pd.DataFrame.from_dict(DataDict, orient='index', columns=[self.Name]))
+            DataFrameList.append(pd.DataFrame.from_dict(DataDict, orient='index', columns=[name]))
 
-        # Create pandas dataframe with the data
-        self.DataFrame = pd.DataFrame.from_dict(self.QuantData, orient='index', columns=[self.Units])
+        # Merge the list of dataframes into a single dataframe with 
 
     @property
     def TimeSpan(self):
