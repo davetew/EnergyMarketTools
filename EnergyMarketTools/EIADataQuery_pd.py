@@ -30,6 +30,12 @@ Created on Fri Apr 21 11:57:23 2017
 import numpy as  np
 import requests as rq
 import pandas as pd
+import pint
+
+# Initialize a pint Unit Registry
+ureg = pint.UnitRegistry()
+Q_ = ureg.Quantity
+
 #from pathlib import Path
 #import pickle
 
@@ -40,34 +46,40 @@ class EIAQuery():
     _EIA_RegKey = 'e28c81f13500f013f8ef67e3a3e4ed9d'
     _QueryPrefix = 'http://api.eia.gov/series/?api_key=%s&series_id=' % (_EIA_RegKey)
     
-    def __init__(self,DataSet,GetFromEIA=False):
-        
+    def __init__(self,DataSets,GetFromEIA=False):
+        """Initialize an instance of EIA Query given a specified DataSet or list of DataSet"""
+
+        if isinstance(DataSet, str):
+            # Convert DataSet to a list with one item
+            DataSets = [DataSets]
 
         """Get the data from the EIA if told to do so, or the data file isn't
         at the specified location."""
         
-        # Full data query
-        self.FullQuery = self._QueryPrefix + DataSet
-        
-        # Execute data query
-        print('Downloading ' + DataSet + ' from the EIA.')
-        self.AllData = rq.get(self.FullQuery).json()
+        for DataSet in DataSets:
 
-        # Extract dataset name & Units
-        self.Name = self.AllData['series'][0]['name']
-        self.Units = self.AllData['series'][0]['units']
-        # self.Geography = self.AllData['series'][0]['geography']
-        print('   Successfully retrieved--> ' + self.Name)
+            # Full data query
+            FullQuery = self._QueryPrefix + DataSet
         
-        # Extract quantitative data
-        RawQuantData = np.array(self.AllData['series'][0]['data'])   
+            # Execute data query
+            print('Downloading ' + DataSet + ' from the EIA.')
+            self.AllData = rq.get(self.FullQuery).json()['series'][0]
+
+            # Extract dataset name & Units
+            self.Name = self.AllData.get('name')
+            self.Units = self.AllData.get('units')
+            self.Geography = self.AllData.get('geography')
+            print('   Successfully retrieved--> ' + self.Name)
         
-        # Store quantitative data in dictionary {year: data}
-        DataDict = {int(RawQuantData[i,0]): float(RawQuantData[i,1]) 
-                    for i in range(len(RawQuantData[:,0]))}
+            # Extract quantitative data
+            RawQuantData = np.array(self.AllData.get('data')   
+            
+            # Store quantitative data in dictionary {period: data}
+            DataDict = {int(RawQuantData[i,0]): Q_(float(RawQuantData[i,1]), self.AllData.get('units')
+                        for i in range(len(RawQuantData[:,0]))}
         
-        # 'Clean' data by replacing None with NaN
-        self.QuantData = self._CleanData( DataDict)
+            # 'Clean' data by replacing None with NaN
+            self.QuantData = self._CleanData(DataDict)
         
         # Standardize units
         self._StandardizeUnits()
