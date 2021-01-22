@@ -31,6 +31,7 @@ import numpy as  np
 import requests as rq
 import pandas as pd
 import pint
+import sys
 
 # Initialize a pint Unit Registry
 ureg = pint.UnitRegistry()
@@ -68,7 +69,7 @@ class EIAQuery():
             #   units: a string containing units for the quantitative data
             #   data: a N x 2 array with the period in the first column and the data in the second
             print('Downloading ' + DataSet + ' from the EIA.')
-            RawData = rq.get(self.FullQuery).json()['series'][0]
+            RawData = rq.get(FullQuery).json()['series'][0]
 
             # Save the data in a more concise form
             for key in ['name', 'geography', 'units', 'data']:
@@ -86,42 +87,8 @@ class EIAQuery():
             # Create a dataframe and add it to the list of dataframes
             DataFrameList.append(pd.DataFrame.from_dict(DataDict, orient='index', columns=[name]))
 
-        # Merge the list of dataframes into a single dataframe with 
-
-    @property
-    def TimeSpan(self):
-        """Save the intial and final year of the data set in a range object."""
-        Years = np.asarray(list(self.QuantData.keys())).astype(int)
-        return range(Years.min(),Years.max())
-    
-    @property
-    def Years(self):
-        return np.asarray(sorted(list(self.QuantData.keys())))
-    
-    @property
-    def Values(self):
-        return np.asarray([self.QuantData[year] for year in self.Years])
-
-    def _StandardizeUnits(self):
-        
-        # Conversion Factors & New Units
-        Conversions = {'Dollars per million Btu': (1/293.3,'$/kWh'),
-                       'Dollars per Thousand Cubic Feet': (1.025/293.3, '$/kWh'),  # Assume conversion is for NG
-                       'Million kilowatthours': (1e6,'kWh'),
-                       'thousand megawatthours': (1e6, 'kWh'),                          
-                       'kWh': (1, 'kWh'),                         
-                       'Dollar per kilowatthour': (1,'$/kWh'),
-                       '$/kWh': (1, '$/kWh'), 
-                       'Trillion Btu': ( 0.29307 ,'TWh') }                            
- #                      'cents per kilowatthour': (0.01,'$/kWh') }                          }                         
-                                    
-        for key, value in self.QuantData.items():
-            self.QuantData[key] *= Conversions[self.Units][0] 
-        
-        self.Units = Conversions[self.Units][1]
-        
-        return self
-
+        # Merge the list of dataframes into a single dataframe
+        self.Data = pd.concat(DataFrameList, axis=1)
              
 class EIAStateQuery():
     """State level data query. Upon initialization load annual average 
@@ -192,3 +159,8 @@ class EIAStateDataSet:
         self.net_generation_kWh = net_generation_kWh 
         
         
+if __name__ == "__main__":
+
+    # Execute a query using the datasets specified in the arguments and 
+    print(EIAQuery(sys.argv[1:]).Data)
+
