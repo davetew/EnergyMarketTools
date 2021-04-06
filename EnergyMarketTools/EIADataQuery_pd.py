@@ -73,7 +73,7 @@ class EIAQuery():
 
             # Save the data in a more concise form
             for key in ['name', 'geography', 'units', 'data']:
-                eval(f"{key} = RawData.get({key})")
+                eval(f"{key} = RawData.get('{key}')")
             
             # Convert the data list of lists to a numpy array
             data = np.array(data)
