@@ -72,8 +72,12 @@ class EIAQuery():
             RawData = rq.get(FullQuery).json()['series'][0]
 
             # Save the data in a more concise form
-            for key in ['name', 'geography', 'units', 'data']:
-                eval(f"{key} = RawData.get('{key}')")
+            #rd = {key: RawData.get(key) for key in ['name', 'geography', 'units', 'data'] }
+            data = RawData.get('data'); units = RawData.get('units'); name = RawData.get('name')
+            print(units)
+            #print(rd)
+            #for key in ['name', 'geography', 'units', 'data']:
+            #    eval(f"{key} = RawData.get('{key}')")
             
             # Convert the data list of lists to a numpy array
             data = np.array(data)
