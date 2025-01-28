@@ -2,7 +2,7 @@ import pandas as pd
 
 # Import the Fred API from the St. Louis Federal Reserve Bank
 from fredapi import Fred
-fred = Fred(api_key='74dc0c0ba5a6d1d5c0e3704cee396565')
+fred = Fred(api_key=None)
 
 def getAnnualCPI(SeriesNames=['CPALTT01USA661S', 'USACPICORAINMEI'], 
                  SeriesLabels=['All Items', 'No Food or Energy'],
